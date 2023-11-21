@@ -16,7 +16,7 @@ public class HashMapApp2 {
 		 * 		public class Product {
 		 * 			private int no;
 		 * 			private String name;
-		 * 			private String makey;
+		 * 			private String maker;
 		 * 			private int price;
 		 * 			private double discountRate;
 		 * 			....
