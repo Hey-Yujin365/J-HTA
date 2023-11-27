@@ -8,8 +8,8 @@ import java.util.TreeSet;
 
 public class Order {
 
-	private int lottoNo;	// 회차번호
-	private long orderNo;	// 주문번호
+	private int lottoNo;				// 회차번호
+	private long orderNo;				// 주문번호
 	private List<Set<Integer>> numbers;	// 구매한 로또번호
 	
 	public Order() {}
@@ -38,7 +38,7 @@ public class Order {
 		this.numbers = numbers;
 	}
 	
-	// 20231124:1700808800677:5,13,20,22,38,43/9,12,18,19,24,29/2,6,17,22,26,41
+	// 20231124:1700808801168:2,6,10,16,28,45/3,6,8,9,29,32
 	public static Order toOrder(String text) {
 		String[] items = text.split(":");
 		
@@ -49,12 +49,12 @@ public class Order {
 		Order order = new Order();
 		order.setLottoNo(lottoNo);
 		order.setOrderNo(orderNo);
-		order.setNumbers(numbers);;
+		order.setNumbers(numbers);
 		
-		return order;
+		return order;		
 	}
 	
-	// text는 5,13,20,22,38,43/9,12,18,19,24,29/2,6,17,22,26,41
+	// text는 2,6,10,16,28,45/3,6,8,9,29,32
 	private static List<Set<Integer>> toList(String text) {
 		List<Set<Integer>> numbers = new ArrayList<>();
 		
@@ -66,11 +66,11 @@ public class Order {
 		return numbers;
 	}
 	
-	// text는 5,13,20,22,38,43
-	// text는 9,12,18,19,24,29
-	// text는 2,6,17,22,26,41
+	// text는 2,6,10,16,28,45
+	// text는 3,6,8,9,29,32
 	private static Set<Integer> toSet(String text) {
 		Set<Integer> set = new TreeSet<Integer>();
+		
 		String[] items = text.split(",");
 		for (String item : items) {
 			set.add(Integer.parseInt(item));
@@ -79,7 +79,6 @@ public class Order {
 		return set;
 	}
 	
-	// 2231124:1700806952324:1,2,3,4,5,6/5,6,7,27,32,41/ ...
 	public String toText() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(lottoNo);
@@ -91,16 +90,13 @@ public class Order {
 		for (Set<Integer> set : numbers) {
 			StringJoiner innerJoiner = new StringJoiner(",");
 			for (Integer num : set) {
-				innerJoiner.add(String.valueOf(num));	// "1,2,3,4,5,6"
+				innerJoiner.add(String.valueOf(num));// "1,2,3,4,5,6"
 			}
 			
-			joiner.add(innerJoiner.toString());	// "1,2,3,4,5,6/7,8,9,10,11,12"
+			joiner.add(innerJoiner.toString());	// "1,2,3,4,5,6/1,2,3,4,5,6"
 		}
-		sb.append(joiner.toString());
+		sb.append(joiner.toString());	
 		
 		return sb.toString();
-		
 	}
-	
-	
 }
