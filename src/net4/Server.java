@@ -13,36 +13,27 @@ public class Server {
 		private Map<Integer, Handler> map = new HashMap<>();
 		
 		public Server() {
+			// 요청명령을 Key, Handler 구현객체를 value로 구성해서 Map객체에 저장
 			map.put(Cmd.REQ_FILE_LIST, new ServerFileListHandler());
 			map.put(Cmd.REQ_DOWNLOAD, new ServerFileDownloadHandler());
 			map.put(Cmd.REQ_UPLOAD, new ServerFileUploadHandler());
+			
 		}
 		
 		public void startup() throws IOException {
-			System.out.println("### 파일서버가 기동됨...");
+			// 클라이언트의 연결요청을 접수받는 ServerSocket을 생성하고, 포트번호를 지정한다.
 			ServerSocket serverSocket = new ServerSocket(30000);
+			System.out.println("### 파일서버가 시작됨...");
 			
 			while (true) {
-				System.out.println("### 파일서버가 클라이언트의 요청을 대기중...");
+				System.out.println("### 파일서버가 클라이언트의 연결요청을 기다림...");
 				Socket socket = serverSocket.accept();
-				System.out.println("### 파일서버가 클라이언트의 연결요청을 접수받음...");
-				
-				System.out.println("### 파일서버가 클라이언트와 통신할 스트림을 생성함...");
-				DataInputStream in = new DataInputStream(socket.getInputStream());
-				DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-				
-				System.out.println("### 파일서버가 클라이언트의 요청을 분석함...");
-				// cmd는 1, 2, 3 중에 하나다.
-				// 3은 Cmd.REQ_FILE_LIST 요청이다.
-				// 2는 Cmd.REQ_FILE_DOWNLOAD 요청이다.
-				// 1는 Cmd.REQ_FILE_UPLOAD 요청이다.
-				int cmd = in.readInt();
-				System.out.println("### 클라이언트 요청: " + cmd);
-				// Map 객체에서 cmd에 해당하는 Handler 객체를 가져온다.
-				Handler handler = map.get(cmd);
-				System.out.println("### Handler 구현객체: " + handler.getClass().getName());
-				// 획득된 Handler구현객체의 handle() 메소드를 실행해서 클라이언트의 요청을 처리한다.
-				handler.handle(in, out);
+				System.out.println("### 파일서버에 클라이언트의 연결요칭이 접수됨...");
+				System.out.println("### 파일서버는 클라이언트와 통신할 소켓을 생성함...");
+			
+				// 제공된 소켓과 연결된 클라이언트와의 통신을 담당하는 스레드 객체를 생성한
+				ServerThread thread = new ServerThread(map, socket);
+				thread.start();
 			}
 		}
 		

@@ -7,9 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ClientFileDownloadHandler implements Handler {
-
-	private Scanner scanner;
 	
+	// 필요한 객체를 연결하기 위한 멤버변수 선언
+	private Scanner scanner;
+	// 객체 생성직후 생성자 실행시에 Scanner 객체를 전달받아서 멤버변수에 대입한다.
 	public ClientFileDownloadHandler(Scanner scanner) {
 		this.scanner = scanner;
 	}
