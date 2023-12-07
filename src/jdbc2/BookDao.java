@@ -66,7 +66,7 @@ public class BookDao {
 		pstmt.executeUpdate();
 		
 		pstmt.close();
-		pstmt.close();
+		connection.close();
 	}
 	
 	
@@ -77,7 +77,7 @@ public class BookDao {
 	// 매개변수: int bookNo
 	public void deleteBookByNo(int bookNo) throws SQLException {
 		String sql = """
-				delete from sample_book
+				delete from sample_books
 				where book_no = ?
 			""";
 		
